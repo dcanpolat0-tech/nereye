@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Image,
+  Linking,
   Modal,
   PanResponder,
   Pressable,
@@ -37,6 +38,7 @@ const ANALYSIS_IMAGE_QUALITY = 0.55;
 const ANALYSIS_REQUEST_TIMEOUT_MS = 35000;
 const FREE_MONTHLY_ANALYSIS_LIMIT = 5;
 const IMAGE_PICKER_MEDIA_TYPES = ['images'];
+const FEEDBACK_EMAIL = 'support@nereye.app';
 
 let activeCurrency = 'TRY';
 
@@ -185,6 +187,16 @@ const translations = {
     noBackupTitle: 'Yedek yok',
     noBackupText: 'Geri yüklenecek bir yedek bulunamadı.',
     backupInfo: 'Fişler, gelirler, dil ve para birimi telefonda yedeklenir.',
+    feedback: 'Geri bildirim',
+    feedbackInfo: 'Öneri, hata veya isteklerini bize gönder.',
+    feedbackTitle: 'Bize neyi düzeltelim?',
+    feedbackText: 'Mesajın e-posta olarak bize gelir. Böylece kullanıcıların istediği şeyleri okuyup uygulamayı ona göre geliştiririz.',
+    feedbackPlaceholder: 'Örn. Fiş okuma daha hızlı olsun, şu ekran karışık...',
+    sendFeedback: 'Geri Bildirim Gönder',
+    feedbackEmptyTitle: 'Mesaj boş',
+    feedbackEmptyText: 'Göndermeden önce kısa bir mesaj yaz.',
+    feedbackMailTitle: 'E-posta açılamadı',
+    feedbackMailText: 'Telefonunda e-posta uygulaması yoksa mesaj gönderilemeyebilir.',
     analysisUnavailableTitle: 'Analiz servisi bağlı değil',
     analysisUnavailableText: 'Gerçek fiş okuma için OCR/AI servisi bağlanmalı. Şimdilik bilgileri elle girip kaydedebilirsin.',
     analysisTimeoutTitle: 'Analiz uzun sürdü',
@@ -380,6 +392,16 @@ const translations = {
     noBackupTitle: 'No backup',
     noBackupText: 'No backup was found to restore.',
     backupInfo: 'Receipts, income, language, and currency are backed up on this phone.',
+    feedback: 'Feedback',
+    feedbackInfo: 'Send suggestions, bugs, or feature requests.',
+    feedbackTitle: 'What should we improve?',
+    feedbackText: 'Your message comes to us by email, so we can read user feedback and improve the app.',
+    feedbackPlaceholder: 'Example: make receipt reading faster, this screen feels confusing...',
+    sendFeedback: 'Send Feedback',
+    feedbackEmptyTitle: 'Message is empty',
+    feedbackEmptyText: 'Write a short message before sending.',
+    feedbackMailTitle: 'Email could not open',
+    feedbackMailText: 'If there is no email app on the phone, the message may not be sent.',
     analysisUnavailableTitle: 'Analysis service is not connected',
     analysisUnavailableText: 'Real receipt reading needs an OCR/AI service. For now, you can enter the details manually and save.',
     analysisTimeoutTitle: 'Analysis took too long',
@@ -575,6 +597,16 @@ const translations = {
     noBackupTitle: 'Aucune sauvegarde',
     noBackupText: 'Aucune sauvegarde a restaurer.',
     backupInfo: 'Tickets, revenus, langue et devise sont sauvegardes sur ce telephone.',
+    feedback: 'Avis',
+    feedbackInfo: 'Envoyez une idee, un bug ou une demande.',
+    feedbackTitle: 'Que devons-nous ameliorer ?',
+    feedbackText: 'Votre message nous arrive par e-mail afin de lire les retours et ameliorer l app.',
+    feedbackPlaceholder: 'Ex. rendre la lecture plus rapide, cet ecran est confus...',
+    sendFeedback: 'Envoyer un avis',
+    feedbackEmptyTitle: 'Message vide',
+    feedbackEmptyText: 'Ecrivez un court message avant l envoi.',
+    feedbackMailTitle: 'E-mail impossible a ouvrir',
+    feedbackMailText: 'Sans application e-mail sur le telephone, le message peut ne pas etre envoye.',
     analysisUnavailableTitle: 'Service d analyse non connecte',
     analysisUnavailableText: 'La lecture reelle des tickets necessite un service OCR/AI. Vous pouvez saisir les details manuellement.',
     analysisTimeoutTitle: 'Analyse trop longue',
@@ -770,6 +802,16 @@ const translations = {
     noBackupTitle: 'Kein Backup',
     noBackupText: 'Kein Backup zum Wiederherstellen gefunden.',
     backupInfo: 'Belege, Einkommen, Sprache und Waehrung werden auf diesem Telefon gesichert.',
+    feedback: 'Feedback',
+    feedbackInfo: 'Sende Ideen, Fehler oder Wuensche.',
+    feedbackTitle: 'Was sollen wir verbessern?',
+    feedbackText: 'Deine Nachricht kommt per E-Mail zu uns, damit wir Feedback lesen und die App verbessern.',
+    feedbackPlaceholder: 'Z.B. Belege schneller lesen, dieser Bildschirm ist unklar...',
+    sendFeedback: 'Feedback senden',
+    feedbackEmptyTitle: 'Nachricht leer',
+    feedbackEmptyText: 'Schreibe vor dem Senden eine kurze Nachricht.',
+    feedbackMailTitle: 'E-Mail konnte nicht geoeffnet werden',
+    feedbackMailText: 'Ohne E-Mail-App auf dem Telefon kann die Nachricht eventuell nicht gesendet werden.',
     analysisUnavailableTitle: 'Analysedienst nicht verbunden',
     analysisUnavailableText: 'Echtes Beleglesen braucht einen OCR/AI-Dienst. Details koennen vorerst manuell eingegeben werden.',
     analysisTimeoutTitle: 'Analyse dauert zu lange',
@@ -965,6 +1007,16 @@ const translations = {
     noBackupTitle: 'Sin copia',
     noBackupText: 'No se encontro ninguna copia para restaurar.',
     backupInfo: 'Tickets, ingresos, idioma y moneda se guardan en este telefono.',
+    feedback: 'Comentarios',
+    feedbackInfo: 'Envia sugerencias, errores o ideas.',
+    feedbackTitle: 'Que deberiamos mejorar?',
+    feedbackText: 'Tu mensaje nos llega por email para leer los comentarios y mejorar la app.',
+    feedbackPlaceholder: 'Ej. hacer la lectura mas rapida, esta pantalla es confusa...',
+    sendFeedback: 'Enviar comentario',
+    feedbackEmptyTitle: 'Mensaje vacio',
+    feedbackEmptyText: 'Escribe un mensaje corto antes de enviar.',
+    feedbackMailTitle: 'No se pudo abrir el email',
+    feedbackMailText: 'Si no hay app de email en el telefono, el mensaje puede no enviarse.',
     analysisUnavailableTitle: 'Servicio de analisis no conectado',
     analysisUnavailableText: 'La lectura real necesita un servicio OCR/AI. Por ahora puedes introducir los datos manualmente.',
     analysisTimeoutTitle: 'Analisis demasiado largo',
@@ -3150,10 +3202,30 @@ function SettingsScreen({
   onSignOut,
   t,
 }) {
+  const [feedbackText, setFeedbackText] = useState('');
   const selectedLanguageName =
     languages.find((language) => language.code === selectedLanguage)?.name || 'English';
   const selectedCurrencyItem =
     currencies.find((currency) => currency.code === selectedCurrency) || currencies[0];
+
+  async function sendFeedback() {
+    const message = feedbackText.trim();
+
+    if (!message) {
+      Alert.alert(t.feedbackEmptyTitle, t.feedbackEmptyText);
+      return;
+    }
+
+    const subject = encodeURIComponent('Nereye feedback');
+    const body = encodeURIComponent(`${message}\n\n---\nLanguage: ${selectedLanguage}\nCurrency: ${selectedCurrency}`);
+    const mailUrl = `mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`;
+
+    try {
+      await Linking.openURL(mailUrl);
+    } catch (error) {
+      Alert.alert(t.feedbackMailTitle, t.feedbackMailText);
+    }
+  }
 
   if (settingsSection === 'language') {
     return (
@@ -3272,6 +3344,29 @@ function SettingsScreen({
     );
   }
 
+  if (settingsSection === 'feedback') {
+    return (
+      <View>
+        <View style={styles.card}>
+          <Text style={styles.analysisTitle}>{t.feedbackTitle}</Text>
+          <Text style={styles.analysisText}>{t.feedbackText}</Text>
+        </View>
+
+        <TextInput
+          style={[styles.input, styles.feedbackInput]}
+          value={feedbackText}
+          onChangeText={setFeedbackText}
+          placeholder={t.feedbackPlaceholder}
+          multiline
+          textAlignVertical="top"
+        />
+
+        <PrimaryButton label={t.sendFeedback} onPress={sendFeedback} />
+        <SecondaryButton label={t.back} onPress={() => setSettingsSection('main')} />
+      </View>
+    );
+  }
+
   if (settingsSection === 'premium') {
     return (
       <View>
@@ -3365,6 +3460,12 @@ function SettingsScreen({
           subtitle={t.backupInfo}
           value=">"
           onPress={() => setSettingsSection('backup')}
+        />
+        <SettingsRow
+          title={t.feedback}
+          subtitle={t.feedbackInfo}
+          value=">"
+          onPress={() => setSettingsSection('feedback')}
         />
       </View>
     </View>
@@ -4933,6 +5034,10 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     paddingHorizontal: 14,
     paddingVertical: 13,
+  },
+  feedbackInput: {
+    minHeight: 150,
+    lineHeight: 22,
   },
   manualSaveText: {
     color: '#68766b',
