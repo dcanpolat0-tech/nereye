@@ -112,6 +112,7 @@ const translations = {
     chooseFromGalleryHelp: 'Daha önce çekilmiş fişi seç.',
     demoAnalyze: 'Fişi Analiz Et',
     demoAnalyzing: 'Fiş Analiz Ediliyor...',
+    reanalyzeReceipt: 'Tekrar Analiz Et',
     storeName: 'Mağaza / işletme adı',
     totalAmount: 'Toplam tutar',
     category: 'Kategori',
@@ -317,6 +318,7 @@ const translations = {
     chooseFromGalleryHelp: 'Select an existing receipt photo.',
     demoAnalyze: 'Analyze receipt',
     demoAnalyzing: 'Analyzing receipt...',
+    reanalyzeReceipt: 'Analyze Again',
     storeName: 'Store / business name',
     totalAmount: 'Total amount',
     category: 'Category',
@@ -522,6 +524,7 @@ const translations = {
     chooseFromGalleryHelp: 'Choisir une photo de ticket existante.',
     demoAnalyze: 'Analyser le ticket',
     demoAnalyzing: 'Analyse du ticket...',
+    reanalyzeReceipt: 'Analyser encore',
     storeName: 'Nom du magasin',
     totalAmount: 'Montant total',
     category: 'Categorie',
@@ -727,6 +730,7 @@ const translations = {
     chooseFromGalleryHelp: 'Vorhandenes Belegfoto auswaehlen.',
     demoAnalyze: 'Beleg analysieren',
     demoAnalyzing: 'Beleg wird analysiert...',
+    reanalyzeReceipt: 'Erneut analysieren',
     storeName: 'Geschaeftsname',
     totalAmount: 'Gesamtbetrag',
     category: 'Kategorie',
@@ -932,6 +936,7 @@ const translations = {
     chooseFromGalleryHelp: 'Seleccionar una foto existente.',
     demoAnalyze: 'Analizar ticket',
     demoAnalyzing: 'Analizando ticket...',
+    reanalyzeReceipt: 'Analizar otra vez',
     storeName: 'Nombre de tienda',
     totalAmount: 'Importe total',
     category: 'Categoria',
@@ -2630,6 +2635,14 @@ export default function App() {
                     setPendingPhotoAction('camera');
                     setPhotoOptionsOpen(false);
                   }}
+                  onReanalyze={() => {
+                    if (!canUseReceiptAnalysis) {
+                      showAnalysisLimitAlert();
+                      return;
+                    }
+
+                    analyzeReceiptImage(receiptImage);
+                  }}
                   onSave={saveManualReceipt}
                   onPreviewImage={setPreviewImage}
                   t={t}
@@ -2828,6 +2841,7 @@ function ReceiptScreen({
   onClosePhotoOptions,
   onPickImage,
   onTakePhoto,
+  onReanalyze,
   onSave,
   onPreviewImage,
   t,
@@ -2928,6 +2942,11 @@ function ReceiptScreen({
             <Text style={styles.reviewMeta}>
               {t.analysisConfidence}: %{confidencePercent}
             </Text>
+          )}
+          {receiptImage && (
+            <Pressable style={styles.reanalyzeButton} onPress={onReanalyze}>
+              <Text style={styles.reanalyzeButtonText}>{t.reanalyzeReceipt}</Text>
+            </Pressable>
           )}
         </View>
       )}
@@ -4810,6 +4829,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '900',
     marginTop: 8,
+  },
+  reanalyzeButton: {
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderColor: '#b7d7bf',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 12,
+    paddingVertical: 12,
+  },
+  reanalyzeButtonText: {
+    color: '#0d5f2b',
+    fontSize: 14,
+    fontWeight: '900',
   },
   homeReceiptCard: {
     backgroundColor: '#fff',
