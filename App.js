@@ -1164,7 +1164,28 @@ function getAuthProviderLabel(authChoice, t) {
   return t.notSignedIn;
 }
 
+function safeParseStoredJson(value, fallbackValue) {
+  if (!value) {
+    return fallbackValue;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch (error) {
+    console.warn('Stored JSON could not be parsed:', error);
+    return fallbackValue;
+  }
+}
+
+function isValidReceiptRecord(receipt) {
+  return Boolean(receipt && typeof receipt === 'object' && !Array.isArray(receipt));
+}
+
 function normalizeReceiptCategories(receipt) {
+  if (!isValidReceiptRecord(receipt)) {
+    return null;
+  }
+
   const normalizedCategory = normalizeCategoryKey(receipt.category);
   const normalizedItems = Array.isArray(receipt.items)
     ? receipt.items.map((item) =>
@@ -1782,18 +1803,19 @@ export default function App() {
           AsyncStorage.getItem(ANALYSIS_USAGE_STORAGE_KEY),
         ]);
 
-        if (savedReceipts) {
-          const parsedReceipts = JSON.parse(savedReceipts);
-          if (Array.isArray(parsedReceipts)) {
-            setReceipts(parsedReceipts.filter((receipt) => !isSeedReceipt(receipt)).map(normalizeReceiptCategories));
-          }
+        const parsedReceipts = safeParseStoredJson(savedReceipts, null);
+        if (Array.isArray(parsedReceipts)) {
+          const cleanReceipts = parsedReceipts
+            .filter(isValidReceiptRecord)
+            .filter((receipt) => !isSeedReceipt(receipt))
+            .map(normalizeReceiptCategories)
+            .filter(Boolean);
+          setReceipts(cleanReceipts);
         }
 
-        if (savedIncomeByMonth) {
-          const parsedIncome = JSON.parse(savedIncomeByMonth);
-          if (parsedIncome && typeof parsedIncome === 'object') {
-            setIncomeByMonth(parsedIncome);
-          }
+        const parsedIncome = safeParseStoredJson(savedIncomeByMonth, null);
+        if (parsedIncome && typeof parsedIncome === 'object' && !Array.isArray(parsedIncome)) {
+          setIncomeByMonth(parsedIncome);
         } else if (savedSalary) {
           setIncomeByMonth({ [getMonthKey()]: savedSalary });
         }
@@ -1812,14 +1834,12 @@ export default function App() {
           setAuthChoice(savedAuthChoice);
         }
 
-        if (savedAnalysisUsage) {
-          const parsedAnalysisUsage = JSON.parse(savedAnalysisUsage);
-          if (parsedAnalysisUsage && typeof parsedAnalysisUsage === 'object') {
-            setAnalysisUsageByMonth(parsedAnalysisUsage);
-          }
+        const parsedAnalysisUsage = safeParseStoredJson(savedAnalysisUsage, null);
+        if (parsedAnalysisUsage && typeof parsedAnalysisUsage === 'object' && !Array.isArray(parsedAnalysisUsage)) {
+          setAnalysisUsageByMonth(parsedAnalysisUsage);
         }
       } catch (error) {
-        Alert.alert(translations.en.readError, translations.en.recordsReadError);
+        console.warn('Saved app data could not be loaded:', error);
       } finally {
         setStorageReady(true);
       }
