@@ -1916,11 +1916,11 @@ export default function App() {
 
     if (authChoice) {
       AsyncStorage.setItem(AUTH_CHOICE_STORAGE_KEY, authChoice).catch(() => {
-        Alert.alert(t.saveError, t.recordsReadError);
+        console.warn('Auth choice could not be saved.');
       });
     } else {
       AsyncStorage.removeItem(AUTH_CHOICE_STORAGE_KEY).catch(() => {
-        Alert.alert(t.saveError, t.recordsReadError);
+        console.warn('Auth choice could not be removed.');
       });
     }
   }, [authChoice, storageReady]);
@@ -1931,7 +1931,7 @@ export default function App() {
     }
 
     AsyncStorage.setItem(ANALYSIS_USAGE_STORAGE_KEY, JSON.stringify(analysisUsageByMonth)).catch(() => {
-      Alert.alert(t.saveError, t.recordsReadError);
+      console.warn('Analysis usage could not be saved.');
     });
   }, [analysisUsageByMonth, storageReady]);
 
@@ -2466,7 +2466,7 @@ export default function App() {
       ) {
         Alert.alert(t.analysisUnavailableTitle, t.analysisUnavailableText);
       } else {
-        Alert.alert(t.saveError, t.recordsReadError);
+        Alert.alert(t.analysisUnavailableTitle, t.analysisUnavailableText);
       }
     }
   }
