@@ -18,6 +18,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Localization from 'expo-localization';
 import * as ImageManipulator from 'expo-image-manipulator';
+import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RECEIPTS_STORAGE_KEY = 'paranereye.receipts.v2';
@@ -29,9 +30,16 @@ const AUTH_CHOICE_STORAGE_KEY = 'paranereye.authChoice.v1';
 const ANALYSIS_USAGE_STORAGE_KEY = 'paranereye.analysisUsage.v1';
 const RECEIPT_IMAGE_DIR = `${FileSystem.documentDirectory}receipts/`;
 const BACKUP_DIR = `${FileSystem.documentDirectory}backups/`;
+const APP_CONFIG_EXTRA = Constants.expoConfig?.extra || Constants.manifest?.extra || {};
 const DEFAULT_RECEIPT_ANALYSIS_ENDPOINT = 'https://nereye-receipt-analysis.onrender.com/analyze-receipt';
-const RECEIPT_ANALYSIS_ENDPOINT = process.env.EXPO_PUBLIC_RECEIPT_ANALYSIS_URL || DEFAULT_RECEIPT_ANALYSIS_ENDPOINT;
-const RECEIPT_ANALYSIS_CLIENT_TOKEN = process.env.EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN || '';
+const RECEIPT_ANALYSIS_ENDPOINT =
+  APP_CONFIG_EXTRA.receiptAnalysisUrl ||
+  process.env.EXPO_PUBLIC_RECEIPT_ANALYSIS_URL ||
+  DEFAULT_RECEIPT_ANALYSIS_ENDPOINT;
+const RECEIPT_ANALYSIS_CLIENT_TOKEN =
+  APP_CONFIG_EXTRA.analysisClientToken ||
+  process.env.EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN ||
+  '';
 const ANALYSIS_IMAGE_MAX_WIDTH = 1024;
 const ANALYSIS_IMAGE_QUALITY = 0.55;
 const ANALYSIS_REQUEST_TIMEOUT_MS = 35000;
