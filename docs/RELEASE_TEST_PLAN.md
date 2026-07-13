@@ -9,9 +9,8 @@ Run this test on a real iPhone before each release.
 - Delete the app from the phone.
 - Install the latest build.
 - Open the app.
-- Confirm the login screen looks clean.
-- Choose Apple or Google login flow.
-- Confirm the selected state stays after closing and reopening the app.
+- Confirm the app opens directly to Home.
+- Confirm there is no fake Apple/Google sign-in gate in the first release.
 
 ## Language And Currency
 
@@ -69,10 +68,9 @@ Run this test on a real iPhone before each release.
 
 ## Free Limit And Premium
 
-- On a free account, analyze 5 receipts.
-- Confirm the 6th analysis shows the premium/limit message.
+- Confirm Premium is hidden until Apple subscriptions are connected.
+- Confirm receipt analysis is not blocked by an inactive purchase flow.
 - Confirm manual entry remains available.
-- Confirm Premium screen is clear.
 - Before paid release, connect real Apple subscriptions and test purchase restore.
 
 ## Feedback

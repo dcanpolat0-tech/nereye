@@ -36,11 +36,13 @@ function loadLocalEnv() {
 
 loadLocalEnv();
 
-module.exports = {
+module.exports = ({ config }) => ({
+  ...config,
   ...appJson.expo,
   extra: {
+    ...(config.extra || {}),
     ...(appJson.expo.extra || {}),
     receiptAnalysisUrl: process.env.EXPO_PUBLIC_RECEIPT_ANALYSIS_URL || '',
     analysisClientToken: process.env.EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN || '',
   },
-};
+});

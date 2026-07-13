@@ -47,8 +47,8 @@ Because development is on Windows, use Expo Application Services to build the iP
 - Test the app on a real iPhone with Expo Go.
 - Confirm receipt analysis works through Render.
 - Confirm camera and gallery permissions are clear.
-- Confirm free limit is 5 AI analyses per month.
-- Confirm Premium copy is visible but Apple subscriptions are connected before paid release.
+- Confirm first release has no fake Apple/Google sign-in gate.
+- Confirm Premium paywall is hidden until Apple subscriptions are connected.
 - Confirm the support, privacy, and terms links open.
 
 ## Version Rules

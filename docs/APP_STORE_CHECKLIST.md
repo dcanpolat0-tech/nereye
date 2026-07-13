@@ -27,14 +27,17 @@ Use this checklist before sending Nereye to Apple review.
 
 ## Subscriptions
 
-- Create monthly subscription: `Nereye Premium Monthly`.
-- Create yearly subscription: `Nereye Premium Yearly`.
-- Suggested prices:
-  - Monthly: EUR 2.99
-  - Yearly: EUR 24.99
-- Free plan limit: 5 AI receipt analyses per month.
-- Premium should unlock unlimited AI receipt analysis.
-- Apple purchase state still needs to be connected to the app before paid release.
+- First release mode: Premium paywall is hidden until Apple purchases are connected.
+- Current app setting: `ENABLE_PREMIUM_PAYWALL = false`.
+- When paid release is ready:
+  - Create monthly subscription: `Nereye Premium Monthly`.
+  - Create yearly subscription: `Nereye Premium Yearly`.
+  - Suggested prices:
+    - Monthly: EUR 2.99
+    - Yearly: EUR 24.99
+  - Free plan limit should become 5 AI receipt analyses per month.
+  - Premium should unlock unlimited AI receipt analysis.
+  - Apple purchase state must be connected before enabling the paywall.
 
 ## Backend
 
@@ -69,6 +72,7 @@ Current local drafts:
 - Users can re-analyze a receipt when AI reads it badly.
 - Users can add a custom category from `Other`.
 - Feedback email opens to `dcanpolat0@gmail.com`.
+- First release does not require fake Apple/Google sign-in.
 - No real API keys are committed to GitHub.
 
 ## Final Device Test

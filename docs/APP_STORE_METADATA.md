@@ -59,9 +59,12 @@ https://dcanpolat0-tech.github.io/nereye/terms.html
 
 ## Subscription Draft
 
+Subscriptions are planned but should stay hidden in the first App Store release until Apple purchases are connected and tested.
+
 ### Free Plan
 
-- 5 AI receipt analyses per month
+- First release: receipt analysis available without a visible paywall
+- Future free plan: 5 AI receipt analyses per month
 - Manual receipt entry
 - Receipt archive
 - Basic reports

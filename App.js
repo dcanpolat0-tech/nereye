@@ -44,6 +44,8 @@ const ANALYSIS_IMAGE_MAX_WIDTH = 1024;
 const ANALYSIS_IMAGE_QUALITY = 0.55;
 const ANALYSIS_REQUEST_TIMEOUT_MS = 35000;
 const FREE_MONTHLY_ANALYSIS_LIMIT = 5;
+const ENABLE_START_ACCOUNT_GATE = false;
+const ENABLE_PREMIUM_PAYWALL = false;
 const IMAGE_PICKER_MEDIA_TYPES = ['images'];
 const FEEDBACK_EMAIL = 'dcanpolat0@gmail.com';
 
@@ -2091,7 +2093,7 @@ export default function App() {
   activeCurrency = selectedCurrency;
   const currentAnalysisMonthKey = getMonthKey();
   const monthlyAnalysisUsage = Number(analysisUsageByMonth[currentAnalysisMonthKey]) || 0;
-  const isPremium = false;
+  const isPremium = !ENABLE_PREMIUM_PAYWALL;
   const canUseReceiptAnalysis = isPremium || monthlyAnalysisUsage < FREE_MONTHLY_ANALYSIS_LIMIT;
   const freeUsageText = t.freeUsageText(
     Math.min(monthlyAnalysisUsage, FREE_MONTHLY_ANALYSIS_LIMIT),
@@ -2688,7 +2690,7 @@ export default function App() {
     );
   }
 
-  if (!authChoice) {
+  if (ENABLE_START_ACCOUNT_GATE && !authChoice) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <StatusBar style="dark" />
@@ -3681,18 +3683,22 @@ function SettingsScreen({
   return (
     <View>
       <View style={styles.settingsList}>
-        <SettingsRow
-          title={t.premium}
-          subtitle={t.premiumInfo}
-          value=">"
-          onPress={() => setSettingsSection('premium')}
-        />
-        <SettingsRow
-          title={t.accountSync}
-          subtitle={t.accountSyncInfo}
-          value=">"
-          onPress={() => setSettingsSection('account')}
-        />
+        {ENABLE_PREMIUM_PAYWALL && (
+          <SettingsRow
+            title={t.premium}
+            subtitle={t.premiumInfo}
+            value=">"
+            onPress={() => setSettingsSection('premium')}
+          />
+        )}
+        {ENABLE_START_ACCOUNT_GATE && (
+          <SettingsRow
+            title={t.accountSync}
+            subtitle={t.accountSyncInfo}
+            value=">"
+            onPress={() => setSettingsSection('account')}
+          />
+        )}
         <SettingsRow
           title={t.language}
           subtitle={selectedLanguageName}
