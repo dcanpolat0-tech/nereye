@@ -1,0 +1,14 @@
+.git/
+.expo/
+node_modules/
+dist/
+dist-check/
+web-build/
+logs/
+expo-*.log
+expo-qr*.png
+.env
+.env*.local
+.claude/
+CLAUDE.md
+AGENTS.md

@@ -27,11 +27,11 @@ Users are responsible for:
 - Correcting wrong totals, categories, dates, or items
 - Keeping their own device and account secure
 
-## Premium Features
+## Future Paid Features
 
-Nereye may offer Premium features such as higher or unlimited AI receipt analysis limits, advanced reports, exports, and future cloud backup.
+Nereye may offer paid features in the future, such as higher AI receipt analysis limits, advanced reports, exports, or backup features.
 
-When Premium subscriptions are enabled, purchases and renewals will be handled through Apple's App Store subscription system. Subscription terms, cancellation, and billing are managed through the user's Apple account.
+If subscriptions are enabled, purchases and renewals will be handled through Apple's App Store subscription system. Subscription terms, cancellation, and billing are managed through the user's Apple account.
 
 ## Availability
 

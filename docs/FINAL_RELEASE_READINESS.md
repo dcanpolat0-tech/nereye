@@ -13,6 +13,8 @@ Nereye is technically prepared for the first iPhone release path. The remaining 
 - Version: `1.0.0`
 - iOS build number: `1`
 - First release target: iPhone only
+- Android package is reserved as `com.dcanpolat.nereye`.
+- Android microphone permission is explicitly blocked because receipt scanning does not need audio.
 - Support URL works: `https://dcanpolat0-tech.github.io/nereye/`
 - Privacy Policy URL works: `https://dcanpolat0-tech.github.io/nereye/privacy.html`
 - Terms of Use URL works: `https://dcanpolat0-tech.github.io/nereye/terms.html`
@@ -20,15 +22,17 @@ Nereye is technically prepared for the first iPhone release path. The remaining 
 - iOS Expo export completed successfully.
 - No real OpenAI API key is committed to GitHub.
 - `.env` is ignored and stays local.
+- `.easignore` excludes local secrets and build artifacts from cloud build upload.
 - `.expo` is ignored by Git.
+- Production EAS build needs `EXPO_PUBLIC_RECEIPT_ANALYSIS_URL` and `EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN` configured in EAS.
 
 ## First Release Choices
 
 - The app opens directly to Home.
-- Fake Apple/Google sign-in gate is disabled.
+- Inactive Apple/Google sign-in gate is disabled.
 - Premium paywall is hidden until real Apple subscriptions are connected.
 - Receipt analysis is not blocked by an inactive purchase flow.
-- Receipt data is stored locally on the phone during the MVP phase.
+- Receipt data is stored locally on the phone in the current release.
 
 ## Known Notes
 

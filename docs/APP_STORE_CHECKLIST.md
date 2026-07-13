@@ -73,7 +73,7 @@ Current local drafts:
 - Users can re-analyze a receipt when AI reads it badly.
 - Users can add a custom category from `Other`.
 - Feedback email opens to `dcanpolat0@gmail.com`.
-- First release does not require fake Apple/Google sign-in.
+- First release does not show an inactive Apple/Google sign-in gate.
 - No real API keys are committed to GitHub.
 
 ## Final Device Test

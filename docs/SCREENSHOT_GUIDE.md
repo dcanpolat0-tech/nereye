@@ -35,14 +35,14 @@ The first release targets iPhone only. Capture screenshots from a real iPhone or
    - Caption: `See what you buy most`
 
 7. Settings
-   - Show language, currency, income, feedback, and premium.
+   - Show language, currency, income, backup, and feedback.
    - Caption: `Customize Nereye for daily use`
 
 ## Screenshot Rules
 
 - Use English for the first App Store release screenshots.
 - Use a realistic currency, preferably EUR for the first market.
-- Use realistic but fake stores and products.
+- Use realistic sample stores and products.
 - Do not use blurry receipt photos.
 - Make sure the bottom menu is not covering important buttons.
 - Battery/time bar should look clean.

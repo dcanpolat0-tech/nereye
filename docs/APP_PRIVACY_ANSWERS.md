@@ -4,7 +4,7 @@ Last updated: July 13, 2026
 
 Use this when App Store Connect asks for App Privacy information.
 
-This is a practical draft based on the current MVP. Review it again before final submission.
+This is a practical draft based on the current release. Review it again before final submission.
 
 ## Data Used By The App
 
@@ -29,7 +29,7 @@ Purpose:
 
 Linked to user:
 
-- During the MVP, receipt data is mainly stored on the device.
+- In the current release, receipt data is mainly stored on the device.
 - If AI analysis is used, the receipt image is sent to the Nereye analysis server and processed by AI.
 
 Tracking:
@@ -56,7 +56,7 @@ Tracking:
 
 Examples:
 
-- Premium subscription state after Apple subscriptions are connected
+- Future paid subscription state after Apple subscriptions are connected
 
 Purpose:
 
@@ -71,7 +71,7 @@ Handled by:
 Examples:
 
 - Local app storage keys
-- Future account identifiers if Apple/Google login is connected fully
+- Future account identifiers if cloud login is connected fully
 
 Purpose:
 

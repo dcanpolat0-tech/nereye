@@ -27,9 +27,7 @@ Users should not upload receipts that contain information they do not want proce
 
 ## Local Storage
 
-During the current MVP phase, receipt data, receipt photos, income entries, language, currency, and related settings are stored locally on the user's device.
-
-Cloud sync is planned for a future version but is not fully connected yet.
+In the current release, receipt data, receipt photos, income entries, language, currency, and related settings are stored locally on the user's device.
 
 ## Feedback
 
@@ -37,11 +35,11 @@ If users send feedback from the app, the message opens in the user's email app a
 
 ## Payments And Premium
 
-Nereye may offer Premium features through App Store subscriptions. Payment processing is handled by Apple. Nereye does not directly collect or store card details.
+If Nereye offers paid features in the future, payment processing will be handled by Apple. Nereye does not directly collect or store card details.
 
 ## Data Security
 
-Nereye uses reasonable technical measures for the MVP phase, including server-side environment variables for API keys and token-protected receipt analysis requests.
+Nereye uses reasonable technical measures, including server-side environment variables for API keys and token-protected receipt analysis requests.
 
 No system can be guaranteed to be perfectly secure. Users should avoid uploading sensitive documents that are not needed for personal expense tracking.
 
@@ -51,7 +49,7 @@ Nereye is designed for personal finance tracking and is not directed to children
 
 ## Changes To This Policy
 
-This Privacy Policy may be updated as the app evolves, especially when cloud sync, subscriptions, or additional account features are connected.
+This Privacy Policy may be updated as the app evolves.
 
 ## Contact
 

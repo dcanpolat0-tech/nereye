@@ -10,7 +10,7 @@ Run this test on a real iPhone before each release.
 - Install the latest build.
 - Open the app.
 - Confirm the app opens directly to Home.
-- Confirm there is no fake Apple/Google sign-in gate in the first release.
+- Confirm there is no inactive Apple/Google sign-in gate in the first release.
 
 ## Language And Currency
 

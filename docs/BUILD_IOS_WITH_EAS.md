@@ -13,6 +13,22 @@ Use this guide after the Apple Developer Program enrollment is approved.
 - Support URL: `https://dcanpolat0-tech.github.io/nereye/`
 - Privacy Policy URL: `https://dcanpolat0-tech.github.io/nereye/privacy.html`
 - Terms of Use URL: `https://dcanpolat0-tech.github.io/nereye/terms.html`
+- EAS/Expo environment variables added for the mobile build.
+
+## Required EAS Environment Variables
+
+The backend OpenAI key must stay only on Render. The mobile app only needs the public analysis URL and the app client token.
+
+Add these to the Expo/EAS project before the production build:
+
+```bash
+npx eas-cli env:create --name EXPO_PUBLIC_RECEIPT_ANALYSIS_URL --value https://nereye-receipt-analysis.onrender.com/analyze-receipt --environment production
+npx eas-cli env:create --name EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN --environment production
+```
+
+When asked for the token value, paste the same client token used in Render as `ANALYSIS_CLIENT_TOKEN`.
+
+Do not add `OPENAI_API_KEY` to the mobile app environment.
 
 ## Build With EAS
 
@@ -47,7 +63,7 @@ Because development is on Windows, use Expo Application Services to build the iP
 - Test the app on a real iPhone with Expo Go.
 - Confirm receipt analysis works through Render.
 - Confirm camera and gallery permissions are clear.
-- Confirm first release has no fake Apple/Google sign-in gate.
+- Confirm first release has no inactive Apple/Google sign-in gate.
 - Confirm Premium paywall is hidden until Apple subscriptions are connected.
 - Confirm the support, privacy, and terms links open.
 
