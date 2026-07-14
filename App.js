@@ -138,6 +138,8 @@ const translations = {
     highest: 'En yüksek',
     categoryBreakdown: 'Kategori dağılımı',
     merchantBreakdown: 'Marketler ve mağazalar',
+    merchantReceiptsTitle: (store) => `${store} fişleri`,
+    clearMerchantFilter: 'Seçimi temizle',
     productBreakdown: 'Ürün özeti',
     productsTitle: 'Bu ay en çok alınanlar',
     productsInfo: 'Ürünler aylık toplam adet ve miktara göre sıralanır.',
@@ -347,6 +349,8 @@ const translations = {
     highest: 'Highest',
     categoryBreakdown: 'Category breakdown',
     merchantBreakdown: 'Stores and merchants',
+    merchantReceiptsTitle: (store) => `${store} receipts`,
+    clearMerchantFilter: 'Clear selection',
     productBreakdown: 'Product summary',
     productsTitle: 'Most bought this month',
     productsInfo: 'Products are ranked monthly by total quantity.',
@@ -556,6 +560,8 @@ const translations = {
     highest: 'Plus elevee',
     categoryBreakdown: 'Repartition par categorie',
     merchantBreakdown: 'Magasins et commercants',
+    merchantReceiptsTitle: (store) => `Tickets de ${store}`,
+    clearMerchantFilter: 'Effacer la selection',
     productBreakdown: 'Resume des articles',
     productsTitle: 'Les plus achetes ce mois',
     productsInfo: 'Les articles sont classes chaque mois par quantite totale.',
@@ -765,6 +771,8 @@ const translations = {
     highest: 'Hoechste',
     categoryBreakdown: 'Kategorieaufteilung',
     merchantBreakdown: 'Maerkte und Geschaefte',
+    merchantReceiptsTitle: (store) => `${store} Belege`,
+    clearMerchantFilter: 'Auswahl loeschen',
     productBreakdown: 'Artikeluebersicht',
     productsTitle: 'Diesen Monat am meisten gekauft',
     productsInfo: 'Artikel werden monatlich nach Gesamtmenge sortiert.',
@@ -974,6 +982,8 @@ const translations = {
     highest: 'Mas alto',
     categoryBreakdown: 'Desglose por categoria',
     merchantBreakdown: 'Tiendas y comercios',
+    merchantReceiptsTitle: (store) => `Tickets de ${store}`,
+    clearMerchantFilter: 'Borrar seleccion',
     productBreakdown: 'Resumen de productos',
     productsTitle: 'Mas comprados este mes',
     productsInfo: 'Los productos se ordenan cada mes por cantidad total.',
@@ -1998,6 +2008,7 @@ export default function App() {
   const [settingsSection, setSettingsSection] = useState('main');
   const [reportPeriod, setReportPeriod] = useState('month');
   const [reportSearchText, setReportSearchText] = useState('');
+  const [selectedMerchantKey, setSelectedMerchantKey] = useState(null);
   const [storageReady, setStorageReady] = useState(false);
 
   useEffect(() => {
@@ -2232,6 +2243,25 @@ export default function App() {
     [reportCategories]
   );
   const reportMerchantGroups = useMemo(() => getMerchantGroups(reportReceipts), [reportReceipts]);
+  const selectedMerchantGroup = useMemo(
+    () => reportMerchantGroups.find((merchant) => merchant.key === selectedMerchantKey) || null,
+    [reportMerchantGroups, selectedMerchantKey]
+  );
+
+  function updateReportPeriod(period) {
+    setReportPeriod(period);
+    setSelectedMerchantKey(null);
+  }
+
+  function updateReportSearchText(value) {
+    setReportSearchText(value);
+    setSelectedMerchantKey(null);
+  }
+
+  function selectReportMerchant(merchant) {
+    setSelectedMerchantKey(merchant.key);
+    setReportSearchText('');
+  }
 
   function updateMonthlyIncome(value) {
     setIncomeByMonth((currentIncome) => ({
@@ -2272,6 +2302,11 @@ export default function App() {
       return;
     }
 
+    if (screen === 'report' && selectedMerchantKey) {
+      setSelectedMerchantKey(null);
+      return;
+    }
+
     if (screen === 'report' && reportSearchText.trim()) {
       setReportSearchText('');
       return;
@@ -2307,11 +2342,12 @@ export default function App() {
           }
         },
       }),
-    [screen, settingsSection, previewImage, reportSearchText, photoOptionsOpen, detailReturnScreen]
+    [screen, settingsSection, previewImage, reportSearchText, selectedMerchantKey, photoOptionsOpen, detailReturnScreen]
   );
   const canShowBackControl =
     !previewImage &&
     ((screen === 'settings' && settingsSection !== 'main') ||
+      (screen === 'report' && Boolean(selectedMerchantKey)) ||
       (screen === 'report' && Boolean(reportSearchText.trim())) ||
       (screen === 'home' && photoOptionsOpen) ||
       screen === 'detail');
@@ -2779,7 +2815,7 @@ export default function App() {
         <StatusBar style="dark" />
         <View style={styles.app}>
           <View style={styles.header}>
-            <View>
+            <View style={styles.headerTitle}>
               <Text style={styles.appName}>Nereye</Text>
               <Text style={styles.muted}>{t.appSubtitle}</Text>
             </View>
@@ -2810,7 +2846,7 @@ export default function App() {
               <Text style={styles.headerBackText}>‹</Text>
             </Pressable>
           )}
-          <View>
+          <View style={styles.headerTitle}>
             <Text style={styles.appName}>Nereye</Text>
             <Text style={styles.muted}>{t.appSubtitle}</Text>
           </View>
@@ -2899,11 +2935,13 @@ export default function App() {
               topCategory={reportTopCategory}
               receipts={reportReceipts}
               merchantGroups={reportMerchantGroups}
+              selectedMerchantGroup={selectedMerchantGroup}
               reportPeriod={reportPeriod}
-              setReportPeriod={setReportPeriod}
+              setReportPeriod={updateReportPeriod}
               reportSearchText={reportSearchText}
-              setReportSearchText={setReportSearchText}
-              onSelectMerchant={(merchant) => setReportSearchText(merchant.store)}
+              setReportSearchText={updateReportSearchText}
+              onSelectMerchant={selectReportMerchant}
+              onClearSelectedMerchant={() => setSelectedMerchantKey(null)}
               onSelectReceipt={openReceiptDetail}
               t={t}
             />
@@ -3387,11 +3425,13 @@ function ReportScreen({
   topCategory,
   receipts,
   merchantGroups,
+  selectedMerchantGroup,
   reportPeriod,
   setReportPeriod,
   reportSearchText,
   setReportSearchText,
   onSelectMerchant,
+  onClearSelectedMerchant,
   onSelectReceipt,
   t,
 }) {
@@ -3471,6 +3511,26 @@ function ReportScreen({
       </View>
 
       <MerchantList merchantGroups={merchantGroups} onSelectMerchant={onSelectMerchant} t={t} />
+
+      {selectedMerchantGroup && (
+        <View style={styles.selectedMerchantSection}>
+          <View style={styles.selectedMerchantHeader}>
+            <Text style={styles.selectedMerchantTitle}>
+              {t.merchantReceiptsTitle(selectedMerchantGroup.store)}
+            </Text>
+            <Pressable onPress={onClearSelectedMerchant} hitSlop={8}>
+              <Text style={styles.clearSelectionText}>{t.clearMerchantFilter}</Text>
+            </Pressable>
+          </View>
+          <ReceiptList
+            title=""
+            subtitle={`${selectedMerchantGroup.count} ${t.receiptsShort}`}
+            receipts={selectedMerchantGroup.receipts}
+            onSelectReceipt={onSelectReceipt}
+            t={t}
+          />
+        </View>
+      )}
 
       <ReceiptList
         title={t.receiptArchive}
@@ -4104,7 +4164,7 @@ function ReceiptDetailScreen({
 function ReceiptList({ title, subtitle, receipts, onSelectReceipt, t }) {
   return (
     <View>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      {Boolean(title) && <Text style={styles.sectionTitle}>{title}</Text>}
       {subtitle && <Text style={styles.sectionSubtitle}>{subtitle}</Text>}
       <View style={styles.card}>
         {receipts.length === 0 && (
@@ -4367,8 +4427,13 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     gap: 12,
+    position: 'relative',
+  },
+  headerTitle: {
+    alignItems: 'center',
+    flex: 1,
   },
   headerBackButton: {
     alignItems: 'center',
@@ -4378,7 +4443,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 42,
     justifyContent: 'center',
+    left: 20,
+    position: 'absolute',
+    top: 14,
     width: 42,
+    zIndex: 2,
   },
   headerBackText: {
     color: '#172018',
@@ -4390,11 +4459,13 @@ const styles = StyleSheet.create({
     color: '#172018',
     fontSize: 28,
     fontWeight: '900',
+    textAlign: 'center',
   },
   muted: {
     color: '#68766b',
     fontSize: 13,
     fontWeight: '600',
+    textAlign: 'center',
   },
   authScreen: {
     flex: 1,
@@ -5251,6 +5322,26 @@ const styles = StyleSheet.create({
   merchantChevron: {
     color: '#97a59a',
     fontSize: 24,
+    fontWeight: '900',
+  },
+  selectedMerchantSection: {
+    marginTop: 18,
+  },
+  selectedMerchantHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  selectedMerchantTitle: {
+    color: '#172018',
+    flex: 1,
+    fontSize: 19,
+    fontWeight: '900',
+  },
+  clearSelectionText: {
+    color: '#0d5f2b',
+    fontSize: 12,
     fontWeight: '900',
   },
   productHeroRow: {
