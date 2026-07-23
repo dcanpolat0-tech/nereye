@@ -15,7 +15,7 @@ RATE_LIMIT_MAX_REQUESTS=20
 The mobile app must point to the public HTTPS endpoint:
 
 ```text
-EXPO_PUBLIC_RECEIPT_ANALYSIS_URL=https://your-domain.com/analyze-receipt
+EXPO_PUBLIC_RECEIPT_ANALYSIS_URL=https://reciro-receipt-analysis.onrender.com/analyze-receipt
 EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN=the-same-long-random-token
 ```
 
@@ -45,7 +45,7 @@ This project includes `render.yaml`.
 9. Set the app endpoint:
 
 ```text
-EXPO_PUBLIC_RECEIPT_ANALYSIS_URL=https://your-render-service.onrender.com/analyze-receipt
+EXPO_PUBLIC_RECEIPT_ANALYSIS_URL=https://reciro-receipt-analysis.onrender.com/analyze-receipt
 EXPO_PUBLIC_ANALYSIS_CLIENT_TOKEN=the-same-long-random-token
 ```
 
